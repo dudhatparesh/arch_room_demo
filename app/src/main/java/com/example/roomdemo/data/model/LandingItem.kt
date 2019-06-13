@@ -4,11 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "landing_entity")
-data class LandingEntity(
+@Entity(tableName = "landing_item")
+data class LandingItem(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int,
+    var id: Int?=null,
 
     @ColumnInfo(name = "title")
     val title: String,

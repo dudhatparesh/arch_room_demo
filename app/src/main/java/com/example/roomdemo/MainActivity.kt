@@ -1,24 +1,39 @@
 package com.example.roomdemo
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import com.example.roomdemo.data.AppDatabase
+import com.example.roomdemo.data.model.LandingItem
 
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var appDatabase: AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appDatabase = AppDatabase.getInstance(this)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab.setOnClickListener {
+                view ->
+
+            Handler(Looper.myLooper()).post{
+                Thread {
+                    val landingItem = LandingItem(title= "Test",login="Login",quickLinks = "Quick Links",getStarted = "Get Started")
+                    appDatabase.landingItemDao().add(landingItem)
+                }.start()
+
+            }
+
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
