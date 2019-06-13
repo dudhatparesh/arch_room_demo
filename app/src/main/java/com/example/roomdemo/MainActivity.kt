@@ -3,14 +3,16 @@ package com.example.roomdemo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
 import com.example.roomdemo.data.AppDatabase
 import com.example.roomdemo.data.model.LandingItem
+import com.example.roomdemo.model.LandingFileItem
+import com.google.gson.Gson
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +28,14 @@ class MainActivity : AppCompatActivity() {
 
             Handler(Looper.myLooper()).post{
                 Thread {
-                    val landingItem = LandingItem(title= "Test",login="Login",quickLinks = "Quick Links",getStarted = "Get Started")
+
+                    val inputStreamReader = InputStreamReader(assets.open("dummydata/data.json"))
+                    val landingFileItem = Gson().fromJson<LandingFileItem>(inputStreamReader,LandingFileItem::class.java)
+
+
+
+                    val landingItem = LandingItem(title= landingFileItem.languageTitle,login=landingFileItem.languageLogin,
+                        quickLinks = landingFileItem.languageQuickStart,getStarted =landingFileItem.languageGetStarted)
                     appDatabase.landingItemDao().add(landingItem)
                 }.start()
 
